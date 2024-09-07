@@ -1,0 +1,45 @@
+@media (min-width: 767.98px) {
+    .inputContainer {
+        .inputFilter {
+            width: 8% !important;
+        }
+    }
+}
+
+.tableContainer {
+
+    thead th {
+        background-color: rgba(49, 89, 81, 0.9) !important;
+        color: rgba(255, 255, 255, 1);
+        font-size: .8rem;
+        padding: 1.5rem 0rem;
+    }
+
+    tbody th {
+
+        padding: .7rem 0rem;
+    }
+
+    .table-container tbody tr th {
+        padding: .9rem 0px !important;
+    }
+
+
+    .bgNotAvtive {
+        background-color: rgba(146, 46, 37, 0.7) !important;
+    }
+
+    .bgStatusProject {
+        background-color: rgba(49, 89, 81, 0.9);
+        border-color: transparent !important;
+        color: #fff;
+
+    }
+
+    .bgStatusTask {
+        background-color: rgb(155, 160, 233) !important;
+        border-color: transparent !important;
+        color: #fff;
+    }
+
+}

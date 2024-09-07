@@ -1,0 +1,11 @@
+.cardContainer{
+    button{
+        box-shadow: none !important ;
+    }
+
+    .transitionBgCard{
+        transition: all .2s;
+    }
+
+    
+}

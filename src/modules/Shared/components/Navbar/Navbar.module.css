@@ -1,0 +1,26 @@
+.navContainer {
+    i {
+        font-size: 1.4rem;
+    }
+
+    .navbarCollapse {
+        img {
+            width: 10% !important;
+        }
+
+        .cantentNav {
+            p {
+                margin-bottom: 0rem !important;
+                font-size: 0.875rem;
+            }
+
+            span {
+                font-size: 0.75rem;
+            }
+        }
+
+        i {
+            font-size: 1.2rem;
+        }
+    }
+}

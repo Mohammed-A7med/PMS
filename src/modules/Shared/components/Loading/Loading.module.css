@@ -1,0 +1,36 @@
+.loaderContainer {
+    .loader {
+        width: 100px;
+    }
+
+    .loader div {
+        width: 16px;
+        height: 16px;
+        background-color:  rgba(14, 56, 47, 1);
+        border-radius: 50%;
+        animation: grow-shrink 1.5s infinite;
+    }
+
+    .loader div:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    .loader div:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+
+    .loader div:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+
+}
+@keyframes grow-shrink {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+}
+

@@ -1,0 +1,8 @@
+.bg-cards {
+    background-color: rgba(49, 89, 81, 0.9);
+    min-height: 30rem;
+
+    .bg-card {
+        background-color: rgba(239, 155, 40, 1);
+    }
+}
