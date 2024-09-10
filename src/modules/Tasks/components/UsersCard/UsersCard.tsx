@@ -1,42 +1,23 @@
-import axios, { AxiosError } from "axios";
+import { motion } from "framer-motion";
 import { AssignedTasksListResponse } from "../../../../interfaces/Tasks/UsersTasksResponse";
 import Styles from "./UsersCard.module.css";
-import { TASKS_URLs, requstHeader } from "../../../../constans/END_POINTS";
-import { AxiosErrorResponse } from "../../../../interfaces/AuthResponse/AuthResponse";
-import { toast } from "react-toastify";
 
 export default function UsersCard({
   title,
   tasks,
   status,
-  refetchTasks,
+  changeTaskStatus,
 }: {
   title: string;
   tasks: AssignedTasksListResponse[];
   status: "ToDo" | "InProgress" | "Done";
-  refetchTasks: () => Promise<void>;
+  changeTaskStatus: (taskId: string, status: string) => void;
 }) {
-  const changeTaskStatus = async (taskId: string, newStatus: string) => {
-    try {
-      await axios.put(
-        TASKS_URLs.changeStatusTaskEmployeeUrl(taskId),
-        { status: newStatus },
-        { headers: requstHeader }
-      );
-      refetchTasks();
-    } catch (error) {
-      const axiosError = error as AxiosError<AxiosErrorResponse>;
-      toast.error(
-        axiosError.response?.data.message ||
-          "An error occurred. Please try again."
-      );
-    }
-  };
-
   return (
     <div className="col-md-4 mt-3">
       <h4 className="ms-3">{title} </h4>
-      <div
+      <motion.div
+        layout={true}
         onDrop={(e) => {
           e.preventDefault();
           const taskId = e.dataTransfer.getData("taskId");
@@ -48,19 +29,23 @@ export default function UsersCard({
         className={`cards p-3 rounded-4 mt-4  ${Styles["bg-cards"]}`}
       >
         {tasks.map((item: AssignedTasksListResponse) => (
-          <div
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.958 }}
+            layout
+            layoutId={item.id}
+            key={item.id}
             draggable={true}
-            onDragStart={(e) => {
+            onDragStart={(e: React.DragEvent<HTMLDivElement>) => {
               e.dataTransfer.setData("taskId", item.id);
               e.dataTransfer.setData("prevStatus", item.status);
             }}
-            key={item.id}
             className={`card rounded-3 my-2 ${Styles["bg-card"]}`}
           >
             <p className="pt-2 px-2 text-white">{item.title}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

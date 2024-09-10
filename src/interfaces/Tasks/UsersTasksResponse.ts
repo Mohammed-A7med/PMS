@@ -7,5 +7,6 @@ export interface ApiResponseForAssignedTaks {
 export interface AssignedTasksListResponse {
   id: string;
   title: string;
-  status: "ToDo" | "InProgress" | "Done";
+  status: "ToDo" | "InProgress" | "Done" | string;
+
 }

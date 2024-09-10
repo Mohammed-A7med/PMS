@@ -71,7 +71,6 @@ export default function TaskData() {
         USERS_URLs.getAllUsersUrl,
         {
           headers: requstHeader,
-          params:{pageSize : 1000}
         }
       );
       setUserList(response.data?.data);

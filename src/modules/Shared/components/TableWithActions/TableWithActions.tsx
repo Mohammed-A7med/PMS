@@ -90,7 +90,7 @@ export default function TableWithActions({
                 className="form-control rounded-5"
                 value={dynamicSearchKey}
               >
-                <option value="">Filter</option>
+                <option value="userName">Filter</option>
                 <option value="email">Email</option>
                 <option value="country">Country</option>
                 <option value="groups">Groups</option>

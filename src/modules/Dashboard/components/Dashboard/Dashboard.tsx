@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   TASKS_URLs,
   USERS_URLs,
@@ -15,6 +15,9 @@ import { toast } from "react-toastify";
 import { AxiosErrorResponse } from "../../../../interfaces/AuthResponse/AuthResponse";
 import Loading from "../../../Shared/components/Loading/Loading";
 import { AuthContext } from "../../../../context/AuthContext";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { ChartDataProps } from "../../../../interfaces/Dashboard/ChartsResponse";
 
 export default function Dashboard() {
   const [activatedEmployee, setActivatedEmployee] = useState(0);
@@ -24,22 +27,31 @@ export default function Dashboard() {
   const [doneCounter, setDoneCounter] = useState(0);
   const [loading, setLoading] = useState(false);
   const { userData }: any = useContext(AuthContext);
+  ChartJS.register(ArcElement, Tooltip, Legend);
 
-  const getTotalUsers = async () => {
+  const getTotalUsers = useCallback(async () => {
+    setLoading(true);
     try {
-      const response = await axios.get<UserCountResponse>(
-        USERS_URLs.countUsersUrl,
-        {
-          headers: requstHeader,
-        }
-      );
-      setActivatedEmployee(response?.data?.activatedEmployeeCount);
-      setDeactivateEmployee(response?.data?.deactivatedEmployeeCount);
+      const userGroup = await userData?.userGroup;
+      if (userGroup === "Manager") {
+        const response = await axios.get<UserCountResponse>(
+          USERS_URLs.countUsersUrl,
+          {
+            headers: requstHeader,
+          }
+        );
+        setActivatedEmployee(response?.data?.activatedEmployeeCount || 0);
+        setDeactivateEmployee(response?.data?.deactivatedEmployeeCount || 0);
+      }
     } catch (error) {
       const axiosError = error as AxiosError<AxiosErrorResponse>;
-      toast.error(axiosError.response?.data.message);
+      toast.error(
+        axiosError.response?.data.message || "Failed to fetch user data"
+      );
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [userData]);
 
   const getTotalTasks = async () => {
     setLoading(true);
@@ -53,7 +65,6 @@ export default function Dashboard() {
       setToDoCounter(response.data.toDo);
       setInProgressCounter(response.data.inProgress);
       setDoneCounter(response.data.done);
-      console.log(response);
     } catch (error) {
       const axiosError = error as AxiosError<AxiosErrorResponse>;
       toast.error(axiosError.response?.data.message);
@@ -64,10 +75,36 @@ export default function Dashboard() {
 
   useEffect(() => {
     getTotalTasks();
-    if (userData?.userGroup === "Manager") {
-      getTotalUsers();
-    }
+    getTotalUsers();
   }, []);
+
+  const createChartData = ({ labels, label, data }: ChartDataProps) => ({
+    labels: labels,
+    datasets: [
+      {
+        label:  label ,
+        data: data,
+        backgroundColor: [
+          "rgb(207, 209, 236)",
+          "rgb(228, 228, 188)",
+          "rgb(231, 195, 215)",
+        ],
+        hoverOffset: 4,
+      },
+    ],
+  });
+
+  const chartDataForTasks = createChartData({
+    labels: ["Todo", "InProgress", "Done"],
+    label: "Tasks",
+    data: [toDoCounter, inProgressCounter, doneCounter],
+  });
+
+  const chartDataForUsers = createChartData({
+    labels: ["Active", "Inactive"],
+    label: "Users",
+    data: [activatedEmployee, deactivateEmployee],
+  });
 
   return (
     <>
@@ -113,7 +150,7 @@ export default function Dashboard() {
                             </clipPath>
                           </defs>
                         </svg>
-                        <h5 className="mt-3 text-muted">Progress</h5>
+                        <h5 className="mt-3 text-muted">To Do</h5>
                         <h4>{toDoCounter}</h4>
                       </div>
                     </div>
@@ -141,7 +178,7 @@ export default function Dashboard() {
                             d="M14.815 22H11.17c-.483 0-.947-.217-1.289-.604a2.208 2.208 0 01-.533-1.459v-4.125c0-.546.192-1.071.533-1.458a1.722 1.722 0 011.289-.604h3.645c.483 0 .947.217 1.288.604.342.387.534.912.534 1.459v4.124c0 .547-.192 1.072-.534 1.459a1.722 1.722 0 01-1.288.604zm-3.645-6.875a.574.574 0 00-.43.201.736.736 0 00-.178.486v4.126c0 .182.065.357.179.486a.574.574 0 00.429.201h3.645a.574.574 0 00.43-.201.736.736 0 00.177-.486v-4.125a.736.736 0 00-.178-.487.574.574 0 00-.43-.201H11.17z"
                           ></path>
                         </svg>
-                        <h5 className="mt-3 text-muted">Tasks Number</h5>
+                        <h5 className="mt-3 text-muted">In Progress</h5>
                         <h4>{inProgressCounter}</h4>
                       </div>
                     </div>
@@ -169,7 +206,7 @@ export default function Dashboard() {
                             d="M15.985 16.5h-5.438c-.54 0-1.06-.217-1.442-.604a2.074 2.074 0 01-.597-1.459v-2.75c0-.182.071-.357.199-.486a.676.676 0 01.48-.201h8.158c.18 0 .353.072.48.201.128.13.2.304.2.486v2.75c0 .548-.215 1.072-.598 1.459a2.028 2.028 0 01-1.442.604zm-6.118-4.125v2.063c0 .182.072.357.2.486.127.129.3.201.48.201h5.438c.18 0 .354-.072.481-.201a.691.691 0 00.2-.486v-2.063H9.866zM15.985 9.625h-5.438a.676.676 0 01-.48-.201.691.691 0 01-.2-.486V7.562c0-.547.215-1.071.597-1.458a2.028 2.028 0 011.442-.604h2.72c.54 0 1.06.217 1.442.604.382.387.597.911.597 1.458v1.375a.691.691 0 01-.2.487.676.676 0 01-.48.201zM11.227 8.25h4.078v-.688a.692.692 0 00-.199-.486.676.676 0 00-.48-.201h-2.72a.676.676 0 00-.48.201.692.692 0 00-.2.487v.687z"
                           ></path>
                         </svg>
-                        <h5 className="mt-3 text-muted">Progress</h5>
+                        <h5 className="mt-3 text-muted">Done</h5>
                         <h4>{doneCounter}</h4>
                       </div>
                     </div>
@@ -245,6 +282,22 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
+
+              <div className="col-md-6 d-flex justify-content-center align-items-center">
+                <div className="chart w-75 ">
+                  <Doughnut data={chartDataForTasks} />
+                </div>
+              </div>
+
+              {userData?.userGroup === "Manager" ? (
+                <div className="col-md-6 text-center text-md-start">
+                  <div className="chart w-75 ">
+                    <Doughnut data={chartDataForUsers} />
                   </div>
                 </div>
               ) : (

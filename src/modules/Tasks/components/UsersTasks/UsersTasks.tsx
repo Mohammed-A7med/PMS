@@ -34,6 +34,38 @@ export default function UsersTasks() {
     }
   }, []);
 
+  const changeTaskStatus = useCallback(
+    async (taskId: string, newStatus: string) => {
+      const newTasks = assignedTasksList.map(
+        (task: AssignedTasksListResponse) => {
+          if (task.id == taskId) {
+            task.status = newStatus;
+            return task;
+          }
+          return task;
+        }
+      );
+
+      setAssignedTasksList(newTasks);
+      try {
+        await axios.put(
+          TASKS_URLs.changeStatusTaskEmployeeUrl(taskId),
+          { status: newStatus },
+          { headers: requstHeader }
+        );
+      } catch (error) {
+        const axiosError = error as AxiosError<AxiosErrorResponse>;
+        toast.error(
+          axiosError.response?.data.message ||
+            "An error occurred. Please try again."
+        );
+      } finally {
+        getUserTasks();
+      }
+    },
+    [getUserTasks , assignedTasksList]
+  );
+
   useEffect(() => {
     getUserTasks();
   }, [getUserTasks]);
@@ -44,23 +76,23 @@ export default function UsersTasks() {
       <div className="Board-container mt-5">
         <div className="row ">
           <UsersCard
+            changeTaskStatus={changeTaskStatus}
             title="To Do "
             status="ToDo"
-            refetchTasks={getUserTasks}
             tasks={assignedTasksList.filter((task) => task.status == "ToDo")}
           />
           <UsersCard
+            changeTaskStatus={changeTaskStatus}
             title="In progress "
             status="InProgress"
-            refetchTasks={getUserTasks}
             tasks={assignedTasksList.filter(
               (task) => task.status == "InProgress"
             )}
           />
           <UsersCard
+            changeTaskStatus={changeTaskStatus}
             title="Done "
             status="Done"
-            refetchTasks={getUserTasks}
             tasks={assignedTasksList.filter((task) => task.status == "Done")}
           />
         </div>

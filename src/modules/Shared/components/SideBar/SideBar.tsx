@@ -19,11 +19,6 @@ export default function SideBar() {
     setIsCollapse(!isCollapse);
   };
 
-  const logOut = () => {
-    localStorage.removeItem("userToken");
-    navigate("/login");
-  };
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 900) {
@@ -78,11 +73,21 @@ export default function SideBar() {
           >
             Projects
           </MenuItem>
-            
+
           <MenuItem
             icon={<i className="fa-solid fa-list-check"></i>}
-            component={userData?.userGroup === "Manager" ?<Link to="/dashboard/task-list" /> : <Link to="/dashboard/users-tasks" /> }
-            className={userData?.userGroup === "Manager" ? getMenuItemClassName("/dashboard/task-list") : getMenuItemClassName("/dashboard/users-tasks") }
+            component={
+              userData?.userGroup === "Manager" ? (
+                <Link to="/dashboard/task-list" />
+              ) : (
+                <Link to="/dashboard/users-tasks" />
+              )
+            }
+            className={
+              userData?.userGroup === "Manager"
+                ? getMenuItemClassName("/dashboard/task-list")
+                : getMenuItemClassName("/dashboard/users-tasks")
+            }
           >
             Tasks
           </MenuItem>
@@ -96,7 +101,10 @@ export default function SideBar() {
           </MenuItem>
 
           <MenuItem
-            onClick={logOut}
+            onClick={() => {
+              localStorage.removeItem("userToken");
+              navigate("/login");
+            }}
             icon={<i className="fa-solid fa-right-from-bracket"></i>}
             className="ps-menu-button"
           >

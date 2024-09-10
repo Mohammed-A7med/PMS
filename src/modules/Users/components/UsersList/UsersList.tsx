@@ -14,15 +14,22 @@ import TableWithActions from "../../../Shared/components/TableWithActions/TableW
 import Title from "../../../Shared/components/Title/Title";
 import UpDownArrows from "../../../Shared/components/UpDownArrows/UpDownArrows";
 import CardsWithActions from "../../../Shared/components/CardsWithActions/CardsWithActions";
+import Loading from "../../../Shared/components/Loading/Loading";
 
 export default function UsersList() {
   const [usersList, setUsersList] = useState<UsersListResponse[]>([]);
   const [arrayOfPages, setArrayOfPages] = useState<number[]>([]);
   const [numOfRecords, setNumOfRecords] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [counterLoading, setCounterLoadind] = useState<number>(0);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Function to fetch the list of users from the API
   const getAllUsers = async (params: UsersFilterOptions | null = null) => {
+    if (counterLoading == 0) {
+      setLoading(true);
+      setCounterLoadind(1);
+    }
     try {
       const response = await axios.get<ApiResponseForUser>(
         USERS_URLs.getAllUsersUrl,
@@ -48,6 +55,8 @@ export default function UsersList() {
     } catch (error) {
       const axiosError = error as AxiosError<AxiosErrorResponse>;
       toast.error(axiosError.response?.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,7 +71,11 @@ export default function UsersList() {
       );
       getAllUsers();
       const { isActivated } = response.data;
-      toast.success(`User has been ${isActivated ? "activated" : "deactivated"} successfully.`);
+      toast.success(
+        `User has been ${
+          isActivated ? "activated" : "deactivated"
+        } successfully.`
+      );
     } catch (error) {
       const axiosError = error as AxiosError<AxiosErrorResponse>;
       toast.error(axiosError.response?.data.message);
@@ -81,44 +94,54 @@ export default function UsersList() {
 
   return (
     <>
-      <Title titel={"Users"} />
-      <TableWithActions
-        tHead={
-          <>
-            <th scope="col">
-              User Name <UpDownArrows />
-            </th>
-            <th scope="col">
-              Statues <UpDownArrows />
-            </th>
-            <th scope="col">
-              Phone Number <UpDownArrows />
-            </th>
-            <th scope="col">
-              Email <UpDownArrows />
-            </th>
-            <th scope="col">
-              Date Created <UpDownArrows />
-            </th>
-            <th scope="col"></th>
-          </>
-        }
-        list={usersList}
-        searchParams={searchParams}
-        setSearchParams={setSearchParams}
-        searchKey={"userName"}
-        ComponentName={"Users"}
-        toggleActivation={toggleActivation}
-      />
+      {" "}
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Title titel={"Users"} />
+          <TableWithActions
+            tHead={
+              <>
+                <th scope="col">
+                  User Name <UpDownArrows />
+                </th>
+                <th scope="col">
+                  Statues <UpDownArrows />
+                </th>
+                <th scope="col">
+                  Phone Number <UpDownArrows />
+                </th>
+                <th scope="col">
+                  Email <UpDownArrows />
+                </th>
+                <th scope="col">
+                  Date Created <UpDownArrows />
+                </th>
+                <th scope="col"></th>
+              </>
+            }
+            list={usersList}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            searchKey={"userName"}
+            ComponentName={"Users"}
+            toggleActivation={toggleActivation}
+          />
 
-      <CardsWithActions list={usersList}  toggleActivation={toggleActivation}/>
+          <CardsWithActions
+            list={usersList}
+            toggleActivation={toggleActivation}
+          />
 
-      <PageNavigator
-        arrayOfPages={arrayOfPages}
-        setSearchParams={setSearchParams}
-        searchParams={searchParams}
-        numOfRecords={numOfRecords}
-      />
+          <PageNavigator
+            arrayOfPages={arrayOfPages}
+            setSearchParams={setSearchParams}
+            searchParams={searchParams}
+            numOfRecords={numOfRecords}
+          />
+        </>
+      )}
     </>
   );
 }

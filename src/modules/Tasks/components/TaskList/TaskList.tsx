@@ -16,6 +16,7 @@ import Title from "../../../Shared/components/Title/Title";
 import UpDownArrows from "../../../Shared/components/UpDownArrows/UpDownArrows";
 import CardsWithActions from "../../../Shared/components/CardsWithActions/CardsWithActions";
 import { AuthContext } from "../../../../context/AuthContext";
+import Loading from "../../../Shared/components/Loading/Loading";
 
 export default function ProjectList() {
   const [tasksList, setTasksList] = useState<TasksListResponse[]>([]);
@@ -25,6 +26,8 @@ export default function ProjectList() {
   const [numOfRecords, setNumOfRecords] = useState<number>(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const { userData }: any = useContext(AuthContext);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [counterLoading, setCounterLoadind] = useState<number>(0);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModel = (taskId: number) => {
     setTaskId(taskId);
@@ -33,6 +36,10 @@ export default function ProjectList() {
 
   // Function to fetch the list of Tasks from the API
   const getAllTasks = async (params: TaskFilterOptions | null = null) => {
+    if (counterLoading == 0) {
+      setLoading(true);
+      setCounterLoadind(1);
+    }
     try {
       const response = await axios.get<ApiResponseForTaks>(
         TASKS_URLs.getAllTasksForManagerUrl,
@@ -57,6 +64,8 @@ export default function ProjectList() {
     } catch (error) {
       const axiosError = error as AxiosError<AxiosErrorResponse>;
       toast.error(axiosError.response?.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,60 +99,66 @@ export default function ProjectList() {
 
   return (
     <>
-      {/* Title component displays a title and optionally a button that links to a specified path */}
-      <Title
-        titel={"Tasks"}
-        buttonText={`Add New Task`}
-        linkPath="/dashboard/task-data"
-      />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          {/* Title component displays a title and optionally a button that links to a specified path */}
+          <Title
+            titel={"Tasks"}
+            buttonText={`Add New Task`}
+            linkPath="/dashboard/task-data"
+          />
 
-      {/* DeleteConfirmationModal component displays a confirmation dialog when deleting an item */}
-      <DeleteConfirmationModal
-        showModal={showModal}
-        handleCloseModal={handleCloseModal}
-        handleDeleteModal={DeleteTask}
-        itemName={"Task"}
-      />
+          {/* DeleteConfirmationModal component displays a confirmation dialog when deleting an item */}
+          <DeleteConfirmationModal
+            showModal={showModal}
+            handleCloseModal={handleCloseModal}
+            handleDeleteModal={DeleteTask}
+            itemName={"Task"}
+          />
 
-      {/* Table with actions including search, filter, and pagination */}
-      <TableWithActions
-        tHead={
-          <>
-            <th scope="col">
-              Title <UpDownArrows />
-            </th>
-            <th scope="col">
-              Statues <UpDownArrows />
-            </th>
-            <th scope="col ">
-              User <UpDownArrows />
-            </th>
-            <th scope="col">
-              Description <UpDownArrows />
-            </th>
-            <th scope="col">
-              Date Created <UpDownArrows />
-            </th>
-            {userData?.userGroup === "Manager" ? <th scope="col"></th> : ""}
-          </>
-        }
-        setSearchParams={setSearchParams}
-        searchParams={searchParams}
-        searchKey={"title"}
-        ComponentName={"Tasks"}
-        list={tasksList}
-        handleDelete={handleShowModel}
-      />
+          {/* Table with actions including search, filter, and pagination */}
+          <TableWithActions
+            tHead={
+              <>
+                <th scope="col">
+                  Title <UpDownArrows />
+                </th>
+                <th scope="col">
+                  Statues <UpDownArrows />
+                </th>
+                <th scope="col ">
+                  User <UpDownArrows />
+                </th>
+                <th scope="col">
+                  Description <UpDownArrows />
+                </th>
+                <th scope="col">
+                  Date Created <UpDownArrows />
+                </th>
+                {userData?.userGroup === "Manager" ? <th scope="col"></th> : ""}
+              </>
+            }
+            setSearchParams={setSearchParams}
+            searchParams={searchParams}
+            searchKey={"title"}
+            ComponentName={"Tasks"}
+            list={tasksList}
+            handleDelete={handleShowModel}
+          />
 
-      <CardsWithActions list={tasksList} handleDelete={handleShowModel} />
+          <CardsWithActions list={tasksList} handleDelete={handleShowModel} />
 
-      {/* Page navigator for handling pagination */}
-      <PageNavigator
-        arrayOfPages={arrayOfPages}
-        setSearchParams={setSearchParams}
-        searchParams={searchParams}
-        numOfRecords={numOfRecords}
-      />
+          {/* Page navigator for handling pagination */}
+          <PageNavigator
+            arrayOfPages={arrayOfPages}
+            setSearchParams={setSearchParams}
+            searchParams={searchParams}
+            numOfRecords={numOfRecords}
+          />
+        </>
+      )}
     </>
   );
 }

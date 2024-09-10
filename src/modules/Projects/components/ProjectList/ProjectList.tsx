@@ -16,6 +16,7 @@ import Title from "../../../Shared/components/Title/Title";
 import UpDownArrows from "../../../Shared/components/UpDownArrows/UpDownArrows";
 import CardsWithActions from "../../../Shared/components/CardsWithActions/CardsWithActions";
 import { AuthContext } from "../../../../context/AuthContext";
+import Loading from "../../../Shared/components/Loading/Loading";
 
 export default function ProjectList() {
   const [projectsList, setProjectsList] = useState<ProjectsListResponse[]>([]);
@@ -25,7 +26,8 @@ export default function ProjectList() {
   const [numOfRecords, setNumOfRecords] = useState<number>(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const { userData }: any = useContext(AuthContext);
-
+  const [loading, setLoading] = useState<boolean>(false);
+  const [counterLoading, setCounterLoadind] = useState<number>(0);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModel = (projectId: number) => {
     setProjectId(projectId);
@@ -34,12 +36,21 @@ export default function ProjectList() {
 
   // Function to fetch the list of Projects from the API
   const getAllProject = async (params: ProjectFilterOptions | null = null) => {
+    if (counterLoading == 0) {
+      setLoading(true);
+      setCounterLoadind(1);
+    }
     try {
-      const url =
-        userData?.userGroup === "Manager"
-          ? PROJECTS_URLs.getProjectsForManagerUrl
-          : PROJECTS_URLs.getProjectsForEmployeeUrl;
-
+      const userGroup = await userData?.userGroup;
+      let url: string;
+      if (userGroup === "Manager") {
+        url = PROJECTS_URLs.getProjectsForManagerUrl;
+      } else if (userGroup === "Employee") {
+        url = PROJECTS_URLs.getProjectsForEmployeeUrl;
+      }
+      else {
+        throw new Error('User group is not defined or recognized.');
+      }
       // Make the request with the determined URL
       const response = await axios.get<ApiResponseForProject>(url, {
         headers: requstHeader,
@@ -60,6 +71,8 @@ export default function ProjectList() {
     } catch (error) {
       const axiosError = error as AxiosError<AxiosErrorResponse>;
       toast.error(axiosError.response?.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -91,60 +104,69 @@ export default function ProjectList() {
 
   return (
     <>
-      {/* Title component displays a title and optionally a button that links to a specified path */}
-      <Title
-        titel={"Projects"}
-        buttonText={`Add New Project`}
-        linkPath="/dashboard/project-data"
-      />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          {/* Title component displays a title and optionally a button that links to a specified path */}
+          <Title
+            titel={"Projects"}
+            buttonText={`Add New Project`}
+            linkPath="/dashboard/project-data"
+          />
 
-      {/* DeleteConfirmationModal component displays a confirmation dialog when deleting an item */}
-      <DeleteConfirmationModal
-        showModal={showModal}
-        handleCloseModal={handleCloseModal}
-        handleDeleteModal={DeleteProject}
-        itemName={"Project"}
-      />
+          {/* DeleteConfirmationModal component displays a confirmation dialog when deleting an item */}
+          <DeleteConfirmationModal
+            showModal={showModal}
+            handleCloseModal={handleCloseModal}
+            handleDeleteModal={DeleteProject}
+            itemName={"Project"}
+          />
 
-      {/* Table with actions including search, filter, and pagination */}
-      <TableWithActions
-        tHead={
-          <>
-            <th scope="col">
-              Title <UpDownArrows />
-            </th>
-            <th scope="col">
-              Statues <UpDownArrows />
-            </th>
-            <th scope="col ">
-              Num Tasks <UpDownArrows />
-            </th>
-            <th scope="col">
-              Description <UpDownArrows />
-            </th>
-            <th scope="col">
-              Date Created <UpDownArrows />
-            </th>
-            {userData?.userGroup === "Manager" ? <th scope="col"></th> : ""}
-          </>
-        }
-        list={projectsList}
-        setSearchParams={setSearchParams}
-        searchParams={searchParams}
-        ComponentName={"Project"}
-        searchKey={"title"}
-        handleDelete={handleShowModel}
-      />
+          {/* Table with actions including search, filter, and pagination */}
+          <TableWithActions
+            tHead={
+              <>
+                <th scope="col">
+                  Title <UpDownArrows />
+                </th>
+                <th scope="col">
+                  Statues <UpDownArrows />
+                </th>
+                <th scope="col ">
+                  Num Tasks <UpDownArrows />
+                </th>
+                <th scope="col">
+                  Description <UpDownArrows />
+                </th>
+                <th scope="col">
+                  Date Created <UpDownArrows />
+                </th>
+                <th scope="col"></th>
+              </>
+            }
+            list={projectsList}
+            setSearchParams={setSearchParams}
+            searchParams={searchParams}
+            ComponentName={"Project"}
+            searchKey={"title"}
+            handleDelete={handleShowModel}
+          />
 
-      <CardsWithActions list={projectsList} handleDelete={handleShowModel} />
+          <CardsWithActions
+            list={projectsList}
+            handleDelete={handleShowModel}
+          />
 
-      {/* Page navigator for handling pagination */}
-      <PageNavigator
-        arrayOfPages={arrayOfPages}
-        setSearchParams={setSearchParams}
-        searchParams={searchParams}
-        numOfRecords={numOfRecords}
-      />
+          {/* Page navigator for handling pagination */}
+          <PageNavigator
+            arrayOfPages={arrayOfPages}
+            setSearchParams={setSearchParams}
+            searchParams={searchParams}
+            numOfRecords={numOfRecords}
+          />
+        </>
+      )}
     </>
   );
 }
