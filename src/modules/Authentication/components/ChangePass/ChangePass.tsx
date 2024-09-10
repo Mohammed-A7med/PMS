@@ -2,19 +2,21 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { PasswordValidation } from "../../../../constans/VALIDATIONS";
 import axios, { AxiosError } from "axios";
-import { AUTH_URLs } from "../../../../constans/END_POINTS";
+import { AUTH_URLs, requstHeader } from "../../../../constans/END_POINTS";
 import { toast } from "react-toastify";
 import AuthTitle from "../AuthShared/AuthTitle";
 import {
   AxiosErrorResponse,
   ChangePasswordFormData,
 } from "../../../../interfaces/AuthResponse/AuthResponse";
+import { useNavigate } from "react-router-dom";
 
 export default function ChangePass() {
   // State hooks to control the visibility of password fields
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -33,10 +35,13 @@ export default function ChangePass() {
   //Function to handle form submission: Sends a PUT request to change the password
   const onSubmit = async (data: ChangePasswordFormData) => {
     try {
-      const response = await axios.put(AUTH_URLs.ChangePassword, data);
+      const response = await axios.put(AUTH_URLs.ChangePassword, data, {
+        headers: requstHeader,
+      });
       toast.success(
         response.data.message || "Your password has been successfully changed!"
       );
+      navigate("/dashboard");
     } catch (error) {
       const axiosError = error as AxiosError<AxiosErrorResponse>;
       toast.error(
@@ -72,7 +77,7 @@ export default function ChangePass() {
               onMouseDown={(e) => e.preventDefault()}
               onMouseUp={(e) => e.preventDefault()}
               type="button"
-              onClick={() => toggleVisibility(setShowOldPassword)}
+              onClick={toggleVisibility(setShowOldPassword)}
               className="input-group-text bg-transparent border-0"
             >
               <span className="sr-only">

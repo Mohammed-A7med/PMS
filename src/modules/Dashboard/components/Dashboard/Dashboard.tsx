@@ -116,7 +116,7 @@ export default function Dashboard() {
 
           <div className={`${Styles.dashboardContainer} mt-5`}>
             <div className="row justify-content-between align-items-center gy-4">
-              <div className="col-md-6 text-center text-md-start">
+              <div className="col-md-6 order-1 order-md-1 text-center text-md-start">
                 <div
                   className={`${Styles.bgCard} card-tasks py-4 rounded-4 px-4`}
                 >
@@ -215,7 +215,7 @@ export default function Dashboard() {
               </div>
 
               {userData?.userGroup === "Manager" ? (
-                <div className="col-md-6 text-center text-md-start">
+                <div className="col-md-6 order-3 order-md-2 text-center text-md-start">
                   <div
                     className={`${Styles.bgCard} card-Users py-4 rounded-4 px-4`}
                   >
@@ -288,14 +288,14 @@ export default function Dashboard() {
                 ""
               )}
 
-              <div className="col-md-6 d-flex justify-content-center align-items-center">
+              <div className="col-md-6 order-2 order-md-3 d-flex justify-content-center align-items-center">
                 <div className="chart w-75 ">
                   <Doughnut data={chartDataForTasks} />
                 </div>
               </div>
 
               {userData?.userGroup === "Manager" ? (
-                <div className="col-md-6 text-center text-md-start">
+                <div className="col-md-6 order-4 order-md-4 d-flex justify-content-center align-items-center">
                   <div className="chart w-75 ">
                     <Doughnut data={chartDataForUsers} />
                   </div>

@@ -105,6 +105,10 @@ export default function TaskData() {
   useEffect(() => {
     getUsersList();
     getProjectsList();
+    if (status && taskData) {
+      setUserId(taskData.employee?.id);
+      setProjectId(taskData.project?.id);
+    }
   }, []);
 
   return (
