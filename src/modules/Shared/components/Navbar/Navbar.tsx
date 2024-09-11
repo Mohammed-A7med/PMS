@@ -13,7 +13,7 @@ export default function Navbar() {
       <nav
         className={`navbar navbar-expand-lg navbar-light ${Styles.navContainer} shadow-lg `}
       >
-        <div className="container-fluid d-flex ">
+        <div className="container-fluid d-flex navbar-light">
           <div className="d-flex justify-content-between w-75 align-items-center ">
             <Link className="navbar-brand" to={"/dashboard"}>
               <img className="img-fluid" src={navLogo} alt="navbar-logo" />

@@ -53,7 +53,7 @@ export default function Dashboard() {
     }
   }, [userData]);
 
-  const getTotalTasks = async () => {
+  const getTotalTasks = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get<TaskCountResponse>(
@@ -67,22 +67,24 @@ export default function Dashboard() {
       setDoneCounter(response.data.done);
     } catch (error) {
       const axiosError = error as AxiosError<AxiosErrorResponse>;
-      toast.error(axiosError.response?.data.message);
+      toast.error(
+        axiosError.response?.data.message || "Failed to fetch task data"
+      );
     } finally {
       setLoading(false);
     }
-  };
+  }, [userData]);
 
   useEffect(() => {
     getTotalTasks();
     getTotalUsers();
-  }, []);
+  }, [userData]);
 
   const createChartData = ({ labels, label, data }: ChartDataProps) => ({
     labels: labels,
     datasets: [
       {
-        label:  label ,
+        label: label,
         data: data,
         backgroundColor: [
           "rgb(207, 209, 236)",

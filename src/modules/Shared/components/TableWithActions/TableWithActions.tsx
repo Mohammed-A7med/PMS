@@ -172,79 +172,83 @@ export default function TableWithActions({
                     </td>
 
                     {/* Actions */}
-                    <td>
-                      <button
-                        className="border-0 bg-transparent dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i className="fa-solid fa-ellipsis-vertical"></i>
-                      </button>
-                      <ul
-                        className="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton"
-                      >
-                        {list?.title && userData?.userGroup === "Manager" ? (
-                          <>
-                            <li>
-                              <a className="dropdown-item">
-                                <i className="mx-2 text-success fa-regular fa-eye"></i>
-                                View
-                              </a>
-                            </li>
-                            <li>
-                              <Link
-                                className="text-decoration-none dropdown-item"
-                                to={
-                                  list?.employee?.userName
-                                    ? `/dashboard/task-edit/${list.id}`
-                                    : `/dashboard/project-edit/${list.id}`
-                                }
-                                state={{ listData: list, type: "edit" }}
-                              >
-                                <i className="mx-2 text-success fa-regular fa-pen-to-square"></i>
-                                Edit
-                              </Link>
-                            </li>
-                            <li>
-                              <button
-                                onClick={() => handleDelete?.(list.id)}
-                                className="dropdown-item"
-                              >
-                                <i className="mx-2 text-success fa-solid fa-trash-can"></i>
-                                Delete
-                              </button>
-                            </li>
-                          </>
-                        ) : (
-                          <>
-                            <li>
-                              <button
-                                onClick={() => toggleActivation?.(list.id)}
-                                className="dropdown-item border-0 bg-transparent text-black"
-                              >
-                                <i
-                                  className={
-                                    list.isActivated
-                                      ? "mx-2 text-success fa-solid fa-ban"
-                                      : "mx-2 text-success fa-solid fa-user"
+                    {userData?.userGroup === "Manager" ? (
+                      <td>
+                        <button
+                          className="border-0 bg-transparent dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <i className="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <ul
+                          className="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          {list?.title ? (
+                            <>
+                              <li>
+                                <a className="dropdown-item">
+                                  <i className="mx-2 text-success fa-regular fa-eye"></i>
+                                  View
+                                </a>
+                              </li>
+                              <li>
+                                <Link
+                                  className="text-decoration-none dropdown-item"
+                                  to={
+                                    list?.employee?.userName
+                                      ? `/dashboard/task-edit/${list.id}`
+                                      : `/dashboard/project-edit/${list.id}`
                                   }
-                                ></i>
-                                {list.isActivated ? "Block" : "Unblock"}
-                              </button>
-                            </li>
-                            <li>
-                              <a className="dropdown-item">
-                                <i className="mx-2 text-success fa-regular fa-eye"></i>
-                                View
-                              </a>
-                            </li>
-                          </>
-                        )}
-                      </ul>
-                    </td>
+                                  state={{ listData: list, type: "edit" }}
+                                >
+                                  <i className="mx-2 text-success fa-regular fa-pen-to-square"></i>
+                                  Edit
+                                </Link>
+                              </li>
+                              <li>
+                                <button
+                                  onClick={() => handleDelete?.(list.id)}
+                                  className="dropdown-item"
+                                >
+                                  <i className="mx-2 text-success fa-solid fa-trash-can"></i>
+                                  Delete
+                                </button>
+                              </li>
+                            </>
+                          ) : (
+                            <>
+                              <li>
+                                <button
+                                  onClick={() => toggleActivation?.(list.id)}
+                                  className="dropdown-item border-0 bg-transparent text-black"
+                                >
+                                  <i
+                                    className={
+                                      list.isActivated
+                                        ? "mx-2 text-success fa-solid fa-ban"
+                                        : "mx-2 text-success fa-solid fa-user"
+                                    }
+                                  ></i>
+                                  {list.isActivated ? "Block" : "Unblock"}
+                                </button>
+                              </li>
+                              <li>
+                                <a className="dropdown-item">
+                                  <i className="mx-2 text-success fa-regular fa-eye"></i>
+                                  View
+                                </a>
+                              </li>
+                            </>
+                          )}
+                        </ul>
+                      </td>
+                    ) : (
+                      <td></td>
+                    )}
                   </tr>
                 );
               })}

@@ -117,7 +117,7 @@ export default function Login() {
         </div>
 
         {/* Links for registration and password recovery */}
-        <div className="lodin-links d-flex justify-content-between">
+        <div className="lodin-links d-flex justify-content-between align-items-center">
           <Link
             to={`/register`}
             className="text-white text-decoration-none link-item"
