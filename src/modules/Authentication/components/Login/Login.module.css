@@ -1,3 +1,9 @@
 .text-link{
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
+
+@media (min-width: 480px) {
+    .text-link{
+        font-size: .8rem;
+    }
+  }
