@@ -21,7 +21,7 @@ import UsersList from "./modules/Users/components/UsersList/UsersList";
 import UsersTasks from "./modules/Tasks/components/UsersTasks/UsersTasks";
 
 function App() {
-  const routes = createBrowserRouter([
+  const routes = createHashRouter([
     {
       path: "",
       element: <Authlayout />,
