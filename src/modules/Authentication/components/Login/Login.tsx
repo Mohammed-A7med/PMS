@@ -123,14 +123,14 @@ export default function Login() {
             to={`/register`}
             className={`text-white text-decoration-none link-item ${Styles["text-link"]}`}
           >
-            Register Now ?
+            Register Now?
           </Link>
 
           <Link
             to={`/forget-password`}
             className={`text-white text-decoration-none link-item ${Styles["text-link"]}`}
           >
-            Forget Password ?
+            Forget Password?
           </Link>
         </div>
 
