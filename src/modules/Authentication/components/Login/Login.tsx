@@ -14,6 +14,7 @@ import {
   LoginFormData,
 } from "../../../../interfaces/AuthResponse/AuthResponse";
 import { AuthContext } from "../../../../context/AuthContext";
+import Styles from "./Login.module.css"
 
 export default function Login() {
   const navigate = useNavigate();
@@ -120,14 +121,14 @@ export default function Login() {
         <div className="lodin-links d-flex justify-content-between align-items-center w-100">
           <Link
             to={`/register`}
-            className="text-white text-decoration-none link-item"
+            className={`text-white text-decoration-none link-item ${Styles["text-link"]}`}
           >
             Register Now ?
           </Link>
 
           <Link
             to={`/forget-password`}
-            className="text-white text-decoration-none link-item"
+            className={`text-white text-decoration-none link-item ${Styles["text-link"]}`}
           >
             Forget Password ?
           </Link>
