@@ -36,7 +36,7 @@ export default function ChangePass() {
   const onSubmit = async (data: ChangePasswordFormData) => {
     try {
       const response = await axios.put(AUTH_URLs.ChangePassword, data, {
-        headers: requstHeader,
+        headers: requstHeader(),
       });
       toast.success(
         response.data.message || "Your password has been successfully changed!"

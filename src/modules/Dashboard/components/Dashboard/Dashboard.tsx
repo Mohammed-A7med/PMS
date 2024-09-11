@@ -37,7 +37,7 @@ export default function Dashboard() {
         const response = await axios.get<UserCountResponse>(
           USERS_URLs.countUsersUrl,
           {
-            headers: requstHeader,
+            headers: requstHeader(),
           }
         );
         setActivatedEmployee(response?.data?.activatedEmployeeCount || 0);
@@ -59,7 +59,7 @@ export default function Dashboard() {
       const response = await axios.get<TaskCountResponse>(
         TASKS_URLs.countTasksUrl,
         {
-          headers: requstHeader,
+          headers: requstHeader(),
         }
       );
       setToDoCounter(response.data.toDo);

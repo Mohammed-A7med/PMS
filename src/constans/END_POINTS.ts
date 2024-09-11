@@ -1,7 +1,9 @@
 const BASE_URLS = "https://upskilling-egypt.com:3003/api/v1";
-export const requstHeader = {
-  Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-};
+export const requstHeader = ()=>{
+  return {
+    Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+  };
+}
 //USERS urls
 const BASE_USERS = `${BASE_URLS}/Users`;
 

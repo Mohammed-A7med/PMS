@@ -53,7 +53,7 @@ export default function ProjectList() {
       }
       // Make the request with the determined URL
       const response = await axios.get<ApiResponseForProject>(url, {
-        headers: requstHeader,
+        headers: requstHeader(),
         params: {
           title: params?.title,
           pageSize: params?.pageSize,
@@ -81,7 +81,7 @@ export default function ProjectList() {
     try {
       const response = await axios.delete(
         PROJECTS_URLs.deleteProjectUrl(projectId),
-        { headers: requstHeader }
+        { headers: requstHeader() }
       );
       console.log(response);
       handleCloseModal();

@@ -19,7 +19,7 @@ export default function UsersTasks() {
       const response = await axios.get<ApiResponseForAssignedTaks>(
         TASKS_URLs.getAllAssignedTasksUrl,
         {
-          headers: requstHeader,
+          headers: requstHeader(),
           params: { pageSize: 30 },
         }
       );
@@ -51,7 +51,7 @@ export default function UsersTasks() {
         await axios.put(
           TASKS_URLs.changeStatusTaskEmployeeUrl(taskId),
           { status: newStatus },
-          { headers: requstHeader }
+          { headers: requstHeader() }
         );
       } catch (error) {
         const axiosError = error as AxiosError<AxiosErrorResponse>;

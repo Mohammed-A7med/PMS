@@ -34,7 +34,7 @@ export default function UsersList() {
       const response = await axios.get<ApiResponseForUser>(
         USERS_URLs.getAllUsersUrl,
         {
-          headers: requstHeader,
+          headers: requstHeader(),
           params: {
             userName: params?.userName,
             email: params?.email,
@@ -66,7 +66,7 @@ export default function UsersList() {
         USERS_URLs.toggleUserUrl(id),
         {},
         {
-          headers: requstHeader,
+          headers: requstHeader(),
         }
       );
       getAllUsers();

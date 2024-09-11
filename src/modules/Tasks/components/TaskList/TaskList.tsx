@@ -44,7 +44,7 @@ export default function ProjectList() {
       const response = await axios.get<ApiResponseForTaks>(
         TASKS_URLs.getAllTasksForManagerUrl,
         {
-          headers: requstHeader,
+          headers: requstHeader(),
           params: {
             title: params?.title,
             pageSize: params?.pageSize,
@@ -73,7 +73,7 @@ export default function ProjectList() {
   const DeleteTask = async () => {
     try {
       const response = await axios.delete(TASKS_URLs.deleteTaskUrl(taskId), {
-        headers: requstHeader,
+        headers: requstHeader(),
       });
       console.log(response);
       handleCloseModal();

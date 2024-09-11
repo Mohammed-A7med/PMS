@@ -48,7 +48,7 @@ export default function TaskData() {
           ? `${TASKS_URLs.updateTaskUrl(taskData.id)}`
           : `${TASKS_URLs.createTaskUrl}`,
         data: data,
-        headers: requstHeader,
+        headers: requstHeader(),
       });
       console.log(respone);
       if (status) {
@@ -70,7 +70,7 @@ export default function TaskData() {
       const response = await axios.get<ApiResponseForUser>(
         USERS_URLs.getAllUsersUrl,
         {
-          headers: requstHeader,
+          headers: requstHeader(),
         }
       );
       setUserList(response.data?.data);
@@ -89,7 +89,7 @@ export default function TaskData() {
       const response = await axios.get<ApiResponseForProject>(
         PROJECTS_URLs.getProjectsForManagerUrl,
         {
-          headers: requstHeader,
+          headers: requstHeader(),
         }
       );
       setProjectList(response.data.data);

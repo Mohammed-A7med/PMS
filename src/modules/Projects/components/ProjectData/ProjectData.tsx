@@ -30,7 +30,7 @@ export default function ProjectData() {
           ? `${PROJECTS_URLs.updateProjectUrl(ProjectData.id)}`
           : `${PROJECTS_URLs.createProjectUrl}`,
         data: data,
-        headers: requstHeader,
+        headers: requstHeader(),
       });
       console.log(respone);
       if (status) {
