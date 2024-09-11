@@ -63,7 +63,7 @@ export default function ChangePass() {
       {/* Form for changing password */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Old Password Input */}
-        <div className="my-3 my-md-4">
+        <div className="my-2 my-md-3">
           <label className="main-colr my-1">Old Password</label>
           <div className="input-group">
             <input
@@ -100,7 +100,7 @@ export default function ChangePass() {
         </div>
 
         {/* New Password Input */}
-        <div className="my-4">
+        <div className="my-3">
           <label className="main-colr my-1">New Password</label>
           <div className="input-group">
             <input
