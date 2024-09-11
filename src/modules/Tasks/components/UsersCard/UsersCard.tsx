@@ -22,21 +22,21 @@ export default function UsersCard({
           e.preventDefault();
           const taskId = e.dataTransfer.getData("taskId");
           const prevStatus = e.dataTransfer.getData("prevStatus");
-          if (prevStatus == status) return;
+          if (prevStatus === status) return;
           changeTaskStatus(taskId, status);
         }}
         onDragOver={(e) => e.preventDefault()}
-        className={`cards p-3 rounded-4 mt-4  ${Styles["bg-cards"]}`}
+        className={`cards p-3 rounded-4 mt-4 ${Styles["bg-cards"]}`}
       >
         {tasks.map((item: AssignedTasksListResponse) => (
           <motion.div
+            drag
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.958 }}
             layout
             layoutId={item.id}
             key={item.id}
-            draggable={true}
-            onDragStart={(e: React.DragEvent<HTMLDivElement>) => {
+            onDragStart={(e: any) => {
               e.dataTransfer.setData("taskId", item.id);
               e.dataTransfer.setData("prevStatus", item.status);
             }}
