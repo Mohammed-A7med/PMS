@@ -9,13 +9,20 @@ import {
 } from "../../../../interfaces/Tasks/UsersTasksResponse";
 import Title from "../../../Shared/components/Title/Title";
 import UsersCard from "../UsersCard/UsersCard";
+import Loading from "../../../Shared/components/Loading/Loading";
 
 export default function UsersTasks() {
   const [assignedTasksList, setAssignedTasksList] = useState<
     AssignedTasksListResponse[]
   >([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [counterLoading, setCounterLoadind] = useState<number>(0);
   const getUserTasks = useCallback(async () => {
     try {
+      if (counterLoading == 0) {
+        setLoading(true);
+        setCounterLoadind(1);
+      }
       const response = await axios.get<ApiResponseForAssignedTaks>(
         TASKS_URLs.getAllAssignedTasksUrl,
         {
@@ -31,6 +38,8 @@ export default function UsersTasks() {
         axiosError.response?.data.message ||
           "An error occurred. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -63,7 +72,7 @@ export default function UsersTasks() {
         getUserTasks();
       }
     },
-    [getUserTasks , assignedTasksList]
+    [getUserTasks, assignedTasksList]
   );
 
   useEffect(() => {
@@ -71,32 +80,42 @@ export default function UsersTasks() {
   }, [getUserTasks]);
   return (
     <>
-      <Title titel={"Task Board"} />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Title titel={"Task Board"} />
 
-      <div className="Board-container mt-5">
-        <div className="row ">
-          <UsersCard
-            changeTaskStatus={changeTaskStatus}
-            title="To Do "
-            status="ToDo"
-            tasks={assignedTasksList.filter((task) => task.status == "ToDo")}
-          />
-          <UsersCard
-            changeTaskStatus={changeTaskStatus}
-            title="In progress "
-            status="InProgress"
-            tasks={assignedTasksList.filter(
-              (task) => task.status == "InProgress"
-            )}
-          />
-          <UsersCard
-            changeTaskStatus={changeTaskStatus}
-            title="Done "
-            status="Done"
-            tasks={assignedTasksList.filter((task) => task.status == "Done")}
-          />
-        </div>
-      </div>
+          <div className="Board-container mt-5">
+            <div className="row ">
+              <UsersCard
+                changeTaskStatus={changeTaskStatus}
+                title="To Do "
+                status="ToDo"
+                tasks={assignedTasksList.filter(
+                  (task) => task.status == "ToDo"
+                )}
+              />
+              <UsersCard
+                changeTaskStatus={changeTaskStatus}
+                title="In progress "
+                status="InProgress"
+                tasks={assignedTasksList.filter(
+                  (task) => task.status == "InProgress"
+                )}
+              />
+              <UsersCard
+                changeTaskStatus={changeTaskStatus}
+                title="Done "
+                status="Done"
+                tasks={assignedTasksList.filter(
+                  (task) => task.status == "Done"
+                )}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
