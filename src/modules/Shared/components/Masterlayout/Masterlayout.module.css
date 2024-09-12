@@ -1,0 +1,4 @@
+.container {
+    background-color: var(--table);
+    margin-left: 10px !important;
+}

@@ -1,7 +1,7 @@
 import Navbar from "../Navbar/Navbar";
 import { Outlet } from "react-router-dom";
 import SideBar from "../SideBar/SideBar";
-
+import Styles from "./Masterlayout.module.css"
 
 export default function Masterlayout() {
   return (
@@ -9,7 +9,7 @@ export default function Masterlayout() {
       <Navbar />
       <div className="d-flex">
         <SideBar  />
-        <div className="w-100 container-fluid bg-light">
+        <div className={`${Styles.container} w-100 container-fluid`}>
           <Outlet />
         </div>
       </div>

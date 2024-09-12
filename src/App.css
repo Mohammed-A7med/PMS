@@ -5,15 +5,64 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  /* background-color: var(--color); */
 }
 
 :root {
   --main-colr: rgba(239, 155, 40, 1);
   --main-bg: rgba(239, 155, 40, 1);
+  --bg-Authcolor:  rgba(49, 89, 81, 0.9);
+  --bg-border-bottom: rgba(255, 255, 255, 1);
+  --table: rgba(245, 245, 245, 1);
+  --bg-card: rgba(248, 249, 251, 1);
+  --minubtn: rgba(239, 155, 40, 0.3);
+  --dash-item1: rgba(229, 230, 244, 1);
+  --dash-item2: rgba(244, 244, 229, 1);
+  --dash-item3: rgba(244, 229, 237, 1);
+  --iconbg: rgba(207, 209, 236, 1);
+  --iconbg2: rgba(228, 228, 188, 1);
+  --iconbg3: rgba(231, 195, 215, 1);
+  --color: #707276;
+  --app-color: rgba(255, 255, 255, 1);
+  --dark-color: #101418;
+  --App-color: wght;
+  --headproject: #707276;
+  --color-titledrag: #101418;
+  --color-username: #101418;
+  --bg-sidebar: rgba(14, 56, 47, 1);
+
 }
+
+
+.Dark-mode {
+  --main-colr: rgba(239, 155, 40, 1);
+  --color-titledrag: rgba(255, 255, 255, 1);
+  --color-username: rgba(255, 255, 255, 1);
+  --main-bg: #101418;
+  --bg-Authcolor: #101418;
+  --bg-border-bottom: #383737;
+  --table: #101418;
+  --bg-card: #101418;
+  --minubtn: rgba(239, 155, 40, 0.3);
+  --dash-item1: rgba(229, 230, 244, 1);
+  --dash-item2: rgba(244, 244, 229, 1);
+  --dash-item3: rgba(244, 229, 237, 1);
+  --iconbg: rgba(207, 209, 236, 1);
+  --iconbg2: rgba(228, 228, 188, 1);
+  --iconbg3: rgba(231, 195, 215, 1);
+  --color: #fff;
+  --dark-color: #fff;
+  --App-color: #101418;
+  --bd-table: rgba(14, 56, 47, 1);
+  --bg-sidebar:  #101418;
+}
+
+
 
 body {
   font-family: 'Montserrat', sans-serif !important;
+  background-color: var(--App-color) !important;
+
 }
 
 .main-colr {
@@ -21,7 +70,7 @@ body {
 }
 
 .main-bg {
-  background-color: var(--main-bg);
+  background-color: var(--main-colr);
 }
 
 .sr-only {
@@ -44,7 +93,7 @@ body {
 
 
   .auth-item {
-    background-color: rgba(49, 89, 81, 0.9);
+    background-color: var(--bg-Authcolor);  
   }
 
   label {
@@ -133,13 +182,13 @@ body {
   }
 
   .ps-sidebar-container {
-    background-color: rgba(14, 56, 47, 1) !important;
+    background-color: var(--bg-sidebar) !important;
     transition: all .3s ease-in-out;
   }
 
   .ps-menu-button:hover,
   .ps-menu-button:focus {
-    background-color: rgba(239, 155, 40, 0.3) !important;
+    background-color: var(--minubtn) !important;
     border-radius: 15px;
     border-color: transparent !important;
   }
@@ -169,7 +218,7 @@ body {
 
 
 .table-striped {
-  background-color: rgba(245, 245, 245, 1) !important;
+  background-color: var(--table) !important;
 
   .dropdown-toggle::after {
     display: none;
