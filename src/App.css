@@ -201,6 +201,12 @@ body {
     padding: 0.8rem 0.25rem;
     transition: transform 0.3s ease-in-out;
   }
+
+}
+.navbar-light{
+  .dropdown-toggle::after {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
