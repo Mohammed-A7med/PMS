@@ -8,9 +8,9 @@ export default function AuthLayout() {
 
   return (
     <div className="auth-container">
-      <div className="container-fluid">
-        <div className={`row justify-content-center align-items-center vh-100`}>
-          <div className={isRegisterRoute ? "w-100" : "col-md-5"}>
+      <div className="container-fluid h-100">
+        <div className={`row justify-content-center align-items-center ${isRegisterRoute? "h-100" : "vh-100"}`}>
+          <div className={isRegisterRoute ? "w-100 mt-md-5" : "col-md-5"}>
             {isRegisterRoute ? (
               <Outlet />
             ) : (

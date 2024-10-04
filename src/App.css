@@ -11,7 +11,7 @@
 :root {
   --main-colr: rgba(239, 155, 40, 1);
   --main-bg: rgba(239, 155, 40, 1);
-  --bg-Authcolor:  rgba(49, 89, 81, 0.9);
+  --bg-Authcolor: rgba(49, 89, 81, 0.9);
   --bg-border-bottom: rgba(255, 255, 255, 1);
   --table: rgba(245, 245, 245, 1);
   --bg-card: rgba(248, 249, 251, 1);
@@ -54,7 +54,7 @@
   --dark-color: #fff;
   --App-color: #101418;
   --bd-table: rgba(14, 56, 47, 1);
-  --bg-sidebar:  #101418;
+  --bg-sidebar: #101418;
 }
 
 
@@ -90,10 +90,10 @@ body {
   background-image: url("../src/assets/bg1.png");
   background-position: center center;
   background-size: cover;
-
+  min-height: 100vh;
 
   .auth-item {
-    background-color: var(--bg-Authcolor);  
+    background-color: var(--bg-Authcolor);
   }
 
   label {
@@ -203,7 +203,8 @@ body {
   }
 
 }
-.navbar-light{
+
+.navbar-light {
   .dropdown-toggle::after {
     display: none;
   }
