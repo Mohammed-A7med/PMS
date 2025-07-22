@@ -27,7 +27,7 @@ export default function Login() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     mode: "onBlur",
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "mohamedahmedkhalaf68@gmail.com", password: "@Password321!" },
   });
 
   // Function to toggle password visibility
