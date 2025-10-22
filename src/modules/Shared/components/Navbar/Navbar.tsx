@@ -5,6 +5,7 @@ import navLogo from "../../../../assets/nav-logo.png";
 import { AuthContext } from "../../../../context/AuthContext";
 import { AuthContextType } from "../../../../interfaces/UserInfo/UserInfoResponse";
 import Styles from "./Navbar.module.css";
+import UserGroupIcon from "../../../../icons/UserGroupIcon";
 
 export default function Navbar() {
   const { userData } = useContext(AuthContext) as AuthContextType;
@@ -52,7 +53,8 @@ export default function Navbar() {
             className={`collapse navbar-collapse w-25  ${Styles.navbarCollapse}`}
             id="navbarSupportedContent"
           >
-            <div className="d-flex align-items-center ">
+            <div className="d-flex align-items-center gap-2">
+              <UserGroupIcon size={28}/>
               <div className={`${Styles.cantentNav}`}>
                 <p>{userData?.userName}</p>
                 <span className="text-muted">{userData?.userEmail}</span>
