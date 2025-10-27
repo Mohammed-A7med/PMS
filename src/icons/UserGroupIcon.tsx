@@ -1,10 +1,6 @@
-interface UserGroupIconProps {
-  size?: number | string;
-  color?: string;
-  className?: string;
-}
+import {IconProps} from "./IconInterface/IconPropsInterface";
 
-const UserGroupIcon: React.FC<UserGroupIconProps> = ({
+const UserGroupIcon: React.FC<IconProps> = ({
   size = 20,
   color = "currentColor",
   className,
