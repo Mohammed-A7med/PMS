@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import { useResponsiveCollapse } from "../../../../hooks/useResponsiveCollapse";
 import { AuthContext } from "../../../../context/AuthContext";
 import HomeIcon from "../../../../icons/HomeIcon";
 import LockIcon from "../../../../icons/LockIcon";
@@ -14,33 +15,14 @@ import ArrowRightIcon from "../../../../icons/ArrowRightIcon";
 export default function SideBar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isCollapse, setIsCollapse] = useState(true);
+  const { isCollapse, toggleCollapse } = useResponsiveCollapse(900);
   const { userData }: any = useContext(AuthContext);
-
+  
   const getMenuItemClassName = (path: string) => {
     return location.pathname === path
       ? "ps-menu-button active"
       : "ps-menu-button";
   };
-
-  const toggleCollapse = () => {
-    setIsCollapse(!isCollapse);
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 900) {
-        setIsCollapse(false);
-      } else {
-        setIsCollapse(true);
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   return (
     <div className="sidebar-container d-flex position-sticky top-0 bottom-0 vh-100">
@@ -71,6 +53,7 @@ export default function SideBar() {
               Users
             </MenuItem>
           )}
+
           <MenuItem
             icon={<SplitSquareIcon />}
             component={<Link to="/dashboard/project-list" />}
@@ -117,6 +100,7 @@ export default function SideBar() {
           </MenuItem>
         </Menu>
       </Sidebar>
+
       {isCollapse && (
         <div
           onClick={toggleCollapse}
