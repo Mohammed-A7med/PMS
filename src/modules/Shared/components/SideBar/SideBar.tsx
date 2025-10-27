@@ -1,7 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import { AuthContext } from "../../../../context/AuthContext";
+import HomeIcon from "../../../../icons/HomeIcon";
+import LockIcon from "../../../../icons/LockIcon";
+import LogoutIcon from "../../../../icons/LogoutIcon";
+import SplitSquareIcon from "../../../../icons/SplitSquareIcon";
+import TasksListIcon from "../../../../icons/TasksListIcon";
+import UsersIcon from "../../../../icons/UsersIcon";
 
 export default function SideBar() {
   const navigate = useNavigate();
@@ -37,9 +44,7 @@ export default function SideBar() {
   return (
     <div className="sidebar-container d-flex position-sticky top-0 bottom-0 vh-100">
       <Sidebar collapsed={isCollapse}>
-        {isCollapse ? (
-          ""
-        ) : (
+        {!isCollapse && (
           <div
             onClick={toggleCollapse}
             className="icon-toggle mt-2 d-flex justify-content-end"
@@ -49,25 +54,24 @@ export default function SideBar() {
         )}
         <Menu className={`text-white ${isCollapse ? "mt-5 px-1" : "px-2"}`}>
           <MenuItem
-            icon={<i className="fa-solid fa-house"></i>}
+            icon={<HomeIcon />}
             component={<Link to="/dashboard" />}
             className={getMenuItemClassName("/dashboard")}
           >
             Home
           </MenuItem>
-          {userData?.userGroup === "Manager" ? (
+
+          {userData?.userGroup === "Manager" && (
             <MenuItem
-              icon={<i className="fa-solid fa-user-group"></i>}
+              icon={<UsersIcon />}
               component={<Link to="/dashboard/users-list" />}
               className={getMenuItemClassName("/dashboard/users-list")}
             >
               Users
             </MenuItem>
-          ) : (
-            ""
           )}
           <MenuItem
-            icon={<i className="fa-solid fa-table-columns"></i>}
+            icon={<SplitSquareIcon />}
             component={<Link to="/dashboard/project-list" />}
             className={getMenuItemClassName("/dashboard/project-list")}
           >
@@ -75,7 +79,7 @@ export default function SideBar() {
           </MenuItem>
 
           <MenuItem
-            icon={<i className="fa-solid fa-list-check"></i>}
+            icon={<TasksListIcon />}
             component={
               userData?.userGroup === "Manager" ? (
                 <Link to="/dashboard/task-list" />
@@ -93,7 +97,7 @@ export default function SideBar() {
           </MenuItem>
 
           <MenuItem
-            icon={<i className="fa-solid fa-lock"></i>}
+            icon={<LockIcon />}
             component={<Link to="/change-password" />}
             className={getMenuItemClassName("change-password")}
           >
@@ -105,22 +109,20 @@ export default function SideBar() {
               localStorage.removeItem("userToken");
               navigate("/login");
             }}
-            icon={<i className="fa-solid fa-right-from-bracket"></i>}
+            icon={<LogoutIcon />}
             className="ps-menu-button"
           >
             Logout
           </MenuItem>
         </Menu>
       </Sidebar>
-      {isCollapse ? (
+      {isCollapse && (
         <div
           onClick={toggleCollapse}
           className="icon-toggle mt-3 d-none d-md-block bg-light rounded-end-3"
         >
-          <i className="fa-solid fa-chevron-right main-bg px-1 rounded-end-3 text-white"></i>
+          <i className="main-bg px-1 rounded-end-3 text-white"></i>
         </div>
-      ) : (
-        ""
       )}
     </div>
   );
