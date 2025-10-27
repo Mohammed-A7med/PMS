@@ -9,6 +9,7 @@ import LogoutIcon from "../../../../icons/LogoutIcon";
 import SplitSquareIcon from "../../../../icons/SplitSquareIcon";
 import TasksListIcon from "../../../../icons/TasksListIcon";
 import UsersIcon from "../../../../icons/UsersIcon";
+import ArrowRightIcon from "../../../../icons/ArrowRightIcon";
 
 export default function SideBar() {
   const navigate = useNavigate();
@@ -121,7 +122,9 @@ export default function SideBar() {
           onClick={toggleCollapse}
           className="icon-toggle mt-3 d-none d-md-block bg-light rounded-end-3"
         >
-          <i className="main-bg px-1 rounded-end-3 text-white"></i>
+          <div className="main-bg py-2 rounded-end-3">
+            <ArrowRightIcon size={18} color="white" />
+          </div>
         </div>
       )}
     </div>
