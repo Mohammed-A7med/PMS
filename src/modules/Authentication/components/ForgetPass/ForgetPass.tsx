@@ -1,10 +1,13 @@
-import { useForm } from "react-hook-form";
-import AuthTitle from "../AuthShared/AuthTitle";
-import { emailValidation } from "../../../../constans/VALIDATIONS";
-import axios, { AxiosError } from "axios";
-import { AUTH_URLs } from "../../../../constans/END_POINTS";
 import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+
+import FormInput from "../UI/FormInput";
+import AuthTitle from "../UI/AuthTitle";
+import AuthButton from "../UI/AuthButton";
+import { AUTH_URLs } from "../../../../constans/END_POINTS";
+import { emailValidation } from "../../../../constans/VALIDATIONS";
 import {
   AxiosErrorResponse,
   ForgetPasswordFormData,
@@ -48,39 +51,17 @@ export default function ForgetPass() {
       {/* Form for requesting password reset */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Input field for email */}
-        <div className="my-3 my-md-4">
-          <label className="main-colr my-1">E-mail</label>
-          <div className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Enter your E-mail"
-              aria-label="email"
-              {...register("email", emailValidation)}
-            />
-          </div>
-          {errors.email && (
-            <span className="text-danger">{String(errors.email.message)}</span>
-          )}
-        </div>
+        <FormInput
+          label="E-mail"
+          type="text"
+          placeholder="Enter your E-mail"
+          aria-label="email"
+          {...register("email", emailValidation)}
+          error={errors.email}
+        />
 
         {/* Submit button */}
-        <div className="main-bg rounded-pill mt-5">
-          <button
-            className="btn text-white border-0  w-100 py-2 py-md-3 "
-            type="submit"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <span>
-                please wait...{" "}
-                <i className="fa-solid fa-spinner fa-spin mx-1"></i>
-              </span>
-            ) : (
-              "Verify"
-            )}
-          </button>
-        </div>
+        <AuthButton label="Verify" isSubmitting={isSubmitting} />
       </form>
     </>
   );
