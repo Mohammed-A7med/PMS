@@ -8,12 +8,21 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: { message?: string };
 }
 
+/**
+ * FormInput Component
+ * -------------------
+ * A reusable, accessible input component with optional label and error message.
+ * Supports password visibility toggle and integrates seamlessly with react-hook-form
+ * using `forwardRef` for proper ref forwarding and form registration.
+ */
+
 const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
   ({ label, error, type = "text", className = "", ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const isPasswordField = type === "password";
 
+    // Toggle the password visibility state
     const toggleVisibility = () => {
       setShowPassword((prev) => !prev);
     };
@@ -22,6 +31,7 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
       <div className="my-3 my-md-4">
         {label && <label className="main-colr my-1">{label}</label>}
 
+        {/* Input group for text or password fields */}
         <div className="input-group">
           <input
             ref={ref}
@@ -52,12 +62,13 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
           )}
         </div>
 
+        {/* Validation error message */}
         {error && <span className="text-danger">{error.message}</span>}
       </div>
     );
   }
 );
 
-FormInput.displayName = "FormInput"; // ✅ Needed for forwardRef components
+FormInput.displayName = "FormInput";
 
 export default FormInput;
