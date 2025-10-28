@@ -1,24 +1,25 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios, { AxiosError } from "axios";
+import { toast } from "react-toastify";
+
 import {
   PasswordValidation,
   emailValidation,
 } from "../../../../constans/VALIDATIONS";
 import AuthTitle from "../AuthShared/AuthTitle";
-import axios, { AxiosError } from "axios";
 import { AUTH_URLs } from "../../../../constans/END_POINTS";
-import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
 import {
   AxiosErrorResponse,
   LoginFormData,
 } from "../../../../interfaces/AuthResponse/AuthResponse";
 import { AuthContext } from "../../../../context/AuthContext";
-import Styles from "./Login.module.css"
+import Styles from "./Login.module.css";
+import FormInput from "../UI/FormInput";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
   let { saveUserData }: any = useContext(AuthContext);
 
   const {
@@ -27,13 +28,11 @@ export default function Login() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     mode: "onBlur",
-    defaultValues: { email: "mohamedahmedkhalaf68@gmail.com", password: "@Password321!" },
+    defaultValues: {
+      email: "mohamedahmedkhalaf68@gmail.com",
+      password: "@Password321!",
+    },
   });
-
-  // Function to toggle password visibility
-  const toggleVisibility = (setterFunction: any) => {
-    return () => setterFunction((prevState: any) => !prevState);
-  };
 
   // Function to handle form submission a Send POST request to login endpoint with form data
   const onSubmit = async (data: LoginFormData) => {
@@ -66,56 +65,25 @@ export default function Login() {
       {/* Form for user login */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Email input */}
-        <div className="my-3 my-md-4">
-          <label className="main-colr my-1">E-mail</label>
-          <div className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Enter your E-mail"
-              aria-label="email"
-              {...register("email", emailValidation)}
-            />
-          </div>
-          {errors.email && (
-            <span className="text-danger">{String(errors.email.message)}</span>
-          )}
-        </div>
+        <FormInput
+          label="E-mail"
+          type="email"
+          placeholder="Enter your E-mail"
+          aria-label="email"
+          {...register("email", emailValidation)}
+          error={errors.email}
+        />
+
 
         {/* Password input */}
-        <div className="my-4">
-          <label className="main-colr my-1">New Password</label>
-          <div className="input-group">
-            <input
-              type={showPassword ? "text" : "password"}
-              className="form-control "
-              placeholder="Enter your New Password"
-              aria-label="password"
-              {...register("password", PasswordValidation)}
-            />
-            <button
-              onMouseDown={(e) => e.preventDefault()}
-              onMouseUp={(e) => e.preventDefault()}
-              type="button"
-              onClick={toggleVisibility(setShowPassword)}
-              className="input-group-text bg-transparent border-0 border-bottom border-icon rounded-0"
-            >
-              <span className="sr-only">
-                {showPassword ? "hide password" : "show password"}
-              </span>
-              <i
-                className={`text-white 
-                  ${showPassword ? "fa-solid fa-eye " : "fa-solid fa-eye-slash"}
-                `}
-              ></i>
-            </button>
-          </div>
-          {errors.password && (
-            <span className="text-danger">
-              {String(errors.password.message)}
-            </span>
-          )}
-        </div>
+        <FormInput
+          label="Password"
+          type="password"
+          placeholder="Enter your New Password"
+          aria-label="password"
+          {...register("password", PasswordValidation)}
+          error={errors.password}
+        />
 
         {/* Links for registration and password recovery */}
         <div className="lodin-links d-flex justify-content-between align-items-center w-100">
