@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AuthTitle from "../AuthShared/AuthTitle";
+import AuthTitle from "../UI/AuthTitle";
 import { useForm } from "react-hook-form";
 import PersonImg from "../../../../assets/Person-img-1.jpg";
 import {

@@ -1,26 +1,27 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import axios, { AxiosError } from "axios";
-import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 
+import FormInput from "../UI/FormInput";
+import Styles from "./Login.module.css";
+import AuthTitle from "../UI/AuthTitle";
+import AuthButton from "../UI/AuthButton";
+import { AUTH_URLs } from "../../../../constans/END_POINTS";
+import { AuthContext } from "../../../../context/AuthContext";
 import {
   PasswordValidation,
   emailValidation,
 } from "../../../../constans/VALIDATIONS";
-import AuthTitle from "../AuthShared/AuthTitle";
-import { AUTH_URLs } from "../../../../constans/END_POINTS";
 import {
   AxiosErrorResponse,
   LoginFormData,
 } from "../../../../interfaces/AuthResponse/AuthResponse";
-import { AuthContext } from "../../../../context/AuthContext";
-import Styles from "./Login.module.css";
-import FormInput from "../UI/FormInput";
 
 export default function Login() {
   const navigate = useNavigate();
-  let { saveUserData }: any = useContext(AuthContext);
+  const { saveUserData }: any = useContext(AuthContext);
 
   const {
     register,
@@ -74,7 +75,6 @@ export default function Login() {
           error={errors.email}
         />
 
-
         {/* Password input */}
         <FormInput
           label="Password"
@@ -103,22 +103,7 @@ export default function Login() {
         </div>
 
         {/* Submit button */}
-        <div className="main-bg rounded-pill mt-5">
-          <button
-            className="btn text-white border-0  w-100 py-2 py-md-3 "
-            type="submit"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <span>
-                please wait...{" "}
-                <i className="fa-solid fa-spinner fa-spin mx-1"></i>
-              </span>
-            ) : (
-              "Login"
-            )}
-          </button>
-        </div>
+        <AuthButton label="Login" isSubmitting={isSubmitting} />
       </form>
     </>
   );

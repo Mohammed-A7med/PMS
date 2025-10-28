@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { AUTH_URLs } from "../../../../constans/END_POINTS";
 import { toast } from "react-toastify";
-import AuthTitle from "../AuthShared/AuthTitle";
+import AuthTitle from "../UI/AuthTitle";
 import {
   RequiredField,
   emailValidation,
