@@ -1,29 +1,101 @@
 .navContainer {
+  background-color: var(--navbar-bg);
+  color: var(--navbar-text);
+  border-bottom: 1px solid var(--navbar-border);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  i {
+    font-size: 1.4rem;
+  }
+
+  .navbarCollapse {
+    img {
+      width: 10% !important;
+    }
+
+    .cantentNav {
+      p {
+        margin-bottom: 0rem !important;
+        font-size: 0.875rem;
+      }
+
+      span {
+        font-size: 0.75rem;
+      }
+    }
+
     i {
-        font-size: 1.4rem;
+      font-size: 1.2rem;
     }
+  }
 
-    .navbarCollapse {
-        img {
-            width: 10% !important;
-        }
+  /* === Icon Buttons === */
+  .iconButton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
 
-        .cantentNav {
-            p {
-                margin-bottom: 0rem !important;
-                font-size: 0.875rem;
-            }
+  .iconButton:hover {
+    background-color: var(--navbar-hover-bg);
+    border-radius: 50%;
+    transform: scale(1.05);
+  }
 
-            span {
-                font-size: 0.75rem;
-            }
-        }
+  /* === Notification Badge === */
+  .notificationBadge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--navbar-icon);
+    border-radius: 50%;
+  }
 
-        i {
-            font-size: 1.2rem;
-        }
-    }
+  /* === User Info === */
+  .userIconContainer {
+    background-color: rgba(239, 155, 40, 0.1);
+    width: 40px;
+    height: 40px;
+  }
 
-    
- 
+  .userName {
+    font-weight: 600;
+    color: var(--navbar-text);
+  }
+
+  /* === Right Section === */
+  .rightSection {
+    display: flex;
+    align-items: center;
+  }
+
+  /* === Custom Toggler === */
+  .togglerCustom {
+    border: none;
+    box-shadow: none;
+  }
+
+  .togglerCustom:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* Make toggler icon visible in dark mode automatically */
+  .navbar-toggler-icon {
+    filter: invert(0);
+    transition: filter 0.3s ease;
+  }
+
+  body.Dark-mode & .navbar-toggler-icon {
+    filter: invert(1) brightness(1.2);
+  }
+  
 }
+
