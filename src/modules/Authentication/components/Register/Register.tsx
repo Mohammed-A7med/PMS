@@ -1,16 +1,18 @@
-import { useState } from "react";
-import AuthTitle from "../UI/AuthTitle";
+import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import FormInput from "../UI/FormInput";
+import AuthTitle from "../UI/AuthTitle";
+import AuthButton from "../UI/AuthButton";
 import PersonImg from "../../../../assets/Person-img-1.jpg";
+import { AUTH_URLs } from "../../../../constans/END_POINTS";
 import {
   PasswordValidation,
   RequiredField,
   emailValidation,
 } from "../../../../constans/VALIDATIONS";
-import axios, { AxiosError } from "axios";
-import { AUTH_URLs } from "../../../../constans/END_POINTS";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import {
   AxiosErrorResponse,
   RegisterFormData,
@@ -18,8 +20,6 @@ import {
 
 export default function Register() {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -36,11 +36,6 @@ export default function Register() {
       phoneNumber: "",
     },
   });
-
-  // Function to toggle visibility of password fields
-  const toggleVisibility = (setterFunction: any) => {
-    return () => setterFunction((prevState: any) => !prevState);
-  };
 
   // Function to append form data to FormData object for API submission
   const appendToFormData = (data: RegisterFormData) => {
@@ -119,186 +114,83 @@ export default function Register() {
         <div className="row">
           {/* User Name Input */}
           <div className="col-md-6">
-            <div className="my-3 my-md-4">
-              <label className="main-colr my-1">User Name</label>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter your name"
-                  aria-label="userName"
-                  {...register("userName", RequiredField("user Name"))}
-                />
-              </div>
-              {errors.userName && (
-                <span className="text-danger">
-                  {String(errors.userName.message)}
-                </span>
-              )}
-            </div>
+            <FormInput
+              label="User Name"
+              type="text"
+              placeholder="Enter your name"
+              aria-label="userName"
+              {...register("userName", RequiredField("user Name"))}
+              error={errors.userName}
+            />
           </div>
 
           {/* Email Input */}
           <div className="col-md-6">
-            <div className="my-3 my-md-4">
-              <label className="main-colr my-1">E-mail</label>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter your E-mail"
-                  aria-label="email"
-                  {...register("email", emailValidation)}
-                />
-              </div>
-              {errors.email && (
-                <span className="text-danger">
-                  {String(errors.email.message)}
-                </span>
-              )}
-            </div>
+            <FormInput
+              label="E-mail"
+              type="text"
+              placeholder="Enter your E-mail"
+              aria-label="email"
+              {...register("email", emailValidation)}
+              error={errors.email}
+            />
           </div>
 
           {/* Country Input */}
           <div className="col-md-6">
-            <div className="my-3 my-md-4">
-              <label className="main-colr my-1">Country</label>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter your country"
-                  aria-label="country"
-                  {...register("country", RequiredField("Country"))}
-                />
-              </div>
-              {errors.country && (
-                <span className="text-danger">
-                  {String(errors.country.message)}
-                </span>
-              )}
-            </div>
+            <FormInput
+              label="Country"
+              type="text"
+              placeholder="Enter your country"
+              aria-label="country"
+              {...register("country", RequiredField("Country"))}
+              error={errors.country}
+            />
           </div>
 
           {/* Phone Number Input */}
           <div className="col-md-6">
-            <div className="my-3 my-md-4">
-              <label className="main-colr my-1">Phone Number</label>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter your phone number"
-                  aria-label="phoneNumber"
-                  {...register("phoneNumber", RequiredField("phone Number "))}
-                />
-              </div>
-              {errors.phoneNumber && (
-                <span className="text-danger">
-                  {String(errors.phoneNumber.message)}
-                </span>
-              )}
-            </div>
+            <FormInput
+              label="Phone Number"
+              type="text"
+              placeholder="Enter your phone number"
+              aria-label="phoneNumber"
+              {...register("phoneNumber", RequiredField("phone Number "))}
+              error={errors.phoneNumber}
+            />
           </div>
 
           {/* Password Input */}
           <div className="col-md-6">
-            <div className="my-4">
-              <label className="main-colr my-1">Password</label>
-              <div className="input-group">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="form-control "
-                  placeholder="Enter your New Password"
-                  aria-label="password"
-                  {...register("password", PasswordValidation)}
-                />
-                <button
-                  onMouseDown={(e) => e.preventDefault()}
-                  onMouseUp={(e) => e.preventDefault()}
-                  type="button"
-                  onClick={toggleVisibility(setShowPassword)}
-                  className="input-group-text bg-transparent border-0 border-bottom border-icon rounded-0"
-                >
-                  <span className="sr-only">
-                    {showPassword ? "hide password" : "show password"}
-                  </span>
-                  <i
-                    className={
-                      showPassword
-                        ? "fa-solid text-white fa-eye"
-                        : "fa-solid text-white fa-eye-slash"
-                    }
-                  ></i>
-                </button>
-              </div>
-              {errors.password && (
-                <span className="text-danger">
-                  {String(errors.password.message)}
-                </span>
-              )}
-            </div>
+            <FormInput
+              label="Password"
+              type="password"
+              placeholder="Enter your New Password"
+              aria-label="password"
+              {...register("password", PasswordValidation)}
+              error={errors.password}
+            />
           </div>
 
           {/* Confirm Password Input */}
           <div className="col-md-6">
-            <div className="my-3 my-md-4">
-              <label className="main-colr my-1">Confirm Password</label>
-              <div className="input-group">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  className="form-control "
-                  placeholder="Confirm New Password"
-                  aria-label="confirmPassword"
-                  {...register("confirmPassword", {
-                    validate: (value) =>
-                      value === getValues("password") || "password dont match",
-                  })}
-                />
-                <button
-                  onMouseDown={(e) => e.preventDefault()}
-                  onMouseUp={(e) => e.preventDefault()}
-                  type="button"
-                  onClick={toggleVisibility(setShowConfirmPassword)}
-                  className="input-group-text bg-transparent border-0 border-bottom border-icon rounded-0"
-                >
-                  <span className="sr-only">
-                    {showConfirmPassword ? "hide password" : "show password"}
-                  </span>
-                  <i
-                    className={
-                      showConfirmPassword
-                        ? "fa-solid text-white fa-eye"
-                        : "fa-solid text-white fa-eye-slash"
-                    }
-                  ></i>
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <span className="text-danger">
-                  {String(errors.confirmPassword.message)}
-                </span>
-              )}
-            </div>
+            <FormInput
+              label="Confirm Password"
+              type="password"
+              placeholder="Confirm New Password"
+              aria-label="confirmPassword"
+              {...register("confirmPassword", {
+                validate: (value) =>
+                  value === getValues("password") || "password dont match",
+              })}
+              error={errors.confirmPassword}
+            />
           </div>
 
           {/* Submit Button */}
           <div className="col-md-8 d-flex justify-content-center align-items-center mx-auto">
-            <div className="main-bg rounded-pill  w-100 my-3 my-md-5">
-              <button
-                className="btn text-white border-0  w-100 py-2 py-md-3 "
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <span>
-                    please wait...{" "}
-                    <i className="fa-solid fa-spinner fa-spin mx-1"></i>
-                  </span>
-                ) : (
-                  "Save"
-                )}
-              </button>
+            <div className="w-100 my-3 my-md-4">
+              <AuthButton label="Save" isSubmitting={isSubmitting} />
             </div>
           </div>
         </div>
