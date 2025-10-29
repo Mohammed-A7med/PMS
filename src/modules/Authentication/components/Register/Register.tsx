@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import FormInput from "../UI/FormInput";
 import AuthTitle from "../UI/AuthTitle";
 import AuthButton from "../UI/AuthButton";
+import CameraIcon from "../../../../icons/CameraIcon";
 import PersonImg from "../../../../assets/Person-img-1.jpg";
 import { AUTH_URLs } from "../../../../constans/END_POINTS";
 import {
@@ -93,7 +94,7 @@ export default function Register() {
                 alt="Person"
               />
               <div className="layer-img position-absolute top-0 start-0 end-0 bottom-0 rounded-circle d-flex justify-content-center align-items-center">
-                <i className="fa-solid fa-camera main-colr fa-3x"></i>
+                <CameraIcon color="#ef9b28" size={30} />
               </div>
             </label>
             <input
