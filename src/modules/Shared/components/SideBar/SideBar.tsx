@@ -2,22 +2,22 @@ import { useContext } from "react";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { useResponsiveCollapse } from "../../../../hooks/useResponsiveCollapse";
-import { AuthContext } from "../../../../context/AuthContext";
 import HomeIcon from "../../../../icons/HomeIcon";
 import LockIcon from "../../../../icons/LockIcon";
-import LogoutIcon from "../../../../icons/LogoutIcon";
-import SplitSquareIcon from "../../../../icons/SplitSquareIcon";
-import TasksListIcon from "../../../../icons/TasksListIcon";
 import UsersIcon from "../../../../icons/UsersIcon";
-import ArrowRightIcon from "../../../../icons/ArrowRightIcon";
+import ArrowIcon from "../../../../icons/ArrowIcon";
+import LogoutIcon from "../../../../icons/LogoutIcon";
+import TasksListIcon from "../../../../icons/TasksListIcon";
+import SplitSquareIcon from "../../../../icons/SplitSquareIcon";
+import { AuthContext } from "../../../../context/AuthContext";
+import { useResponsiveCollapse } from "../../../../hooks/useResponsiveCollapse";
 
 export default function SideBar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { isCollapse, toggleCollapse } = useResponsiveCollapse(900);
   const { userData }: any = useContext(AuthContext);
-  
+
   const getMenuItemClassName = (path: string) => {
     return location.pathname === path
       ? "ps-menu-button active"
@@ -32,7 +32,9 @@ export default function SideBar() {
             onClick={toggleCollapse}
             className="icon-toggle mt-2 d-flex justify-content-end"
           >
-            <i className="fa-solid fa-chevron-left main-bg  px-1 rounded-start-3 text-white"></i>
+            <div className="main-bg py-2  rounded-start-3">
+              <ArrowIcon rotate={180} color="white" />
+            </div>
           </div>
         )}
         <Menu className={`text-white ${isCollapse ? "mt-5 px-1" : "px-2"}`}>
@@ -107,7 +109,7 @@ export default function SideBar() {
           className="icon-toggle mt-3 d-none d-md-block bg-light rounded-end-3"
         >
           <div className="main-bg py-2 rounded-end-3">
-            <ArrowRightIcon size={18} color="white" />
+            <ArrowIcon color="white" />
           </div>
         </div>
       )}
