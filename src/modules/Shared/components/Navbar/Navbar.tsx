@@ -1,100 +1,104 @@
-import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
 
-import navLogo from "../../../../assets/nav-logo.png";
+import SunIcon from "../../../../icons/SunIcon";
+import BellIcon from "../../../../icons/BellIcon";
+import MoonIcon from "../../../../icons/MoonIcon";
+import NavLogo from "../../../../assets/nav-logo.png";
+import UserGroupIcon from "../../../../icons/UserGroupIcon";
 import { AuthContext } from "../../../../context/AuthContext";
 import { AuthContextType } from "../../../../interfaces/UserInfo/UserInfoResponse";
-import Styles from "./Navbar.module.css";
-import UserGroupIcon from "../../../../icons/UserGroupIcon";
+import styles from "./Navbar.module.css";
 
 export default function Navbar() {
   const { userData } = useContext(AuthContext) as AuthContextType;
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const [mode, setmode] = useState(false);
-
-  const handleMode = () => {
-    if (mode == false) {
-      setmode(true);
-      document.body.classList.add("Dark-mode");
-    } else if (mode == true) {
-      document.body.classList.remove("Dark-mode");
-
-      setmode(false);
-    }
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev) => {
+      const newMode = !prev;
+      document.body.classList.toggle("Dark-mode", newMode);
+      return newMode;
+    });
   };
 
   return (
-    <>
-      <nav
-        className={`navbar navbar-expand-lg navbar-light ${Styles.navContainer} shadow-lg `}
-      >
-        <div className="container-fluid d-flex ">
-          <div className="d-flex justify-content-between w-75 align-items-center ">
-            <Link className="navbar-brand" to={"/dashboard"}>
-              <img className="img-fluid" src={navLogo} alt="navbar-logo" />
-            </Link>
-            <div className="icon-nav navbar-brand">
-              <i className="fa-solid fa-bell text-warning "></i>
-            </div>
-          </div>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+    <nav
+      className={`navbar navbar-expand-lg ${styles.navContainer} shadow-sm py-2 px-3`}
+    >
+      <div className="container-fluid d-flex align-items-center justify-content-between">
+        <div className="d-flex w-100  align-items-center justify-content-between px-2">
+          {/* Left: Logo */}
+          <Link
+            to="/dashboard"
+            className="navbar-brand d-flex align-items-center gap-2"
           >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+            <img
+              src={NavLogo}
+              alt="Navbar Logo"
+              className={`${styles.logo} img-fluid`}
+            />
+          </Link>
 
+          {/* Right Section (Icons + Toggler) */}
           <div
-            className={`collapse navbar-collapse w-25  ${Styles.navbarCollapse}`}
-            id="navbarSupportedContent"
+            className={`d-flex align-items-center gap-3 ${styles.rightSection}`}
           >
-            <div className="d-flex align-items-center gap-2">
-              <UserGroupIcon size={28}/>
-              <div className={`${Styles.cantentNav}`}>
-                <p>{userData?.userName}</p>
-                <span className="text-muted">{userData?.userEmail}</span>
-              </div>
+            {/* Notification */}
+            <button
+              className={`border-0 bg-transparent p-0 ${styles.iconButton}`}
+              title="Notifications"
+            >
+              <BellIcon size={24} color="#ef9b28" />
+              <span className={`${styles.notificationBadge}`}></span>
+            </button>
 
-              <li className="nav-item dropdown list-unstyled">
-                <a
-                  className="nav-link dropdown-toggle"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i className="fa-solid fa-angle-down text-muted ms-3"></i>
-                </a>
-                <ul
-                  className="dropdown-menu dropdown-menu-end"
-                  aria-labelledby="navbarDropdown"
-                >
-                  <li>
-                    <button
-                      onClick={handleMode}
-                      className="dropdown-item bg-transparent"
-                    >
-                      light / dark{" "}
-                      <span className="toggelmode">
-                        {mode ? (
-                          <i className="fa-solid fa-moon"></i>
-                        ) : (
-                          <i className="fa-solid fa-sun"></i>
-                        )}
-                      </span>
-                    </button>
-                  </li>
-                </ul>
-              </li>
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleDarkMode}
+              className={`border-0 bg-transparent p-0 ${styles.iconButton}`}
+              title={isDarkMode ? "Light Mode" : "Dark Mode"}
+            >
+              {isDarkMode ? (
+                <SunIcon size={22} color="#ef9b28" />
+              ) : (
+                <MoonIcon size={22} color="#ef9b28" />
+              )}
+            </button>
+
+            {/* Navbar Toggler */}
+            <button
+              className={`navbar-toggler ${styles.togglerCustom}`}
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+          </div>
+        </div>
+
+        {/* Collapsible User Section (only visible on mobile) */}
+        <div
+          className={`collapse navbar-collapse justify-content-end ${styles.navbarCollapse}`}
+          id="navbarSupportedContent"
+        >
+          <div className="d-flex align-items-center gap-2 border-start ps-3 mt-3 mt-lg-0">
+            <div
+              className={`rounded-circle d-flex align-items-center justify-content-center ${styles.userIconContainer}`}
+            >
+              <UserGroupIcon size={26} color="#ef9b28" />
+            </div>
+            <div className="d-flex flex-column lh-1">
+              <span className={`${styles.userName}`}>{userData?.userName}</span>
+              <small className={`${isDarkMode? "text-secondary" : "text-muted"} mt-1`}>{userData?.userEmail}</small>
             </div>
           </div>
         </div>
-      </nav>
-    </>
+      </div>
+    </nav>
   );
 }
